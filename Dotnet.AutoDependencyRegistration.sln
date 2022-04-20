@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dotnet.AutoDependencyRegistration", "Dotnet.AutoDependencyRegistration\Dotnet.AutoDependencyRegistration.csproj", "{5904276B-3D47-4550-80D1-DBF78D787096}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{2E4EAA17-CB34-442D-AD66-B666728AC273}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5904276B-3D47-4550-80D1-DBF78D787096}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5904276B-3D47-4550-80D1-DBF78D787096}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5904276B-3D47-4550-80D1-DBF78D787096}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5904276B-3D47-4550-80D1-DBF78D787096}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E4EAA17-CB34-442D-AD66-B666728AC273}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E4EAA17-CB34-442D-AD66-B666728AC273}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E4EAA17-CB34-442D-AD66-B666728AC273}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E4EAA17-CB34-442D-AD66-B666728AC273}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

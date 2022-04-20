@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>net5.0;net6.0</TargetFrameworks>
+        <Nullable>enable</Nullable>
+        <LangVersion>10</LangVersion>
+        <Title>Dotnet Auto Dependency Registration</Title>
+        <Authors>Luke Mansell</Authors>
+        <Description>A light weight auto dependency registration extension which scans all assemblies in the solution and automatically registers classes with [RegisterClassAsSingleton], [RegisterClassAsTransient] or [RegisterClassAsScoped] reducing the need to register them yourself manually.</Description>
+        <Copyright>Luke Mansell</Copyright>
+        <PackageProjectUrl>https://github.com/lukemansell/dotnet-auto-dependency-registration</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/lukemansell/dotnet-auto-dependency-registration</RepositoryUrl>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <RepositoryType>GitHub</RepositoryType>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+      <PackageReference Include="Serilog" Version="2.10.0" />
+      <PackageReference Include="Serilog.AspNetCore" Version="5.0.0" />
+      <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
+    </ItemGroup>
+
+</Project>
