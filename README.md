@@ -1,0 +1,1 @@
+# dotnet-auto-dependency-registration
