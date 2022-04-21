@@ -34,7 +34,7 @@ public static class RegisterDependenciesHelper
     /// <returns></returns>
     private static IEnumerable<ClassesToRegister> MapAssembliesToModel(IEnumerable<Type> classes)
     {
-        var mappedClasses = classes.Select((x => new ClassesToRegister()
+        var mappedClasses = classes.Select((x => new ClassesToRegister
         {
             ClassName = x,
             InterfaceName = x.GetTypeInfo().ImplementedInterfaces.FirstOrDefault(),
@@ -57,7 +57,7 @@ public static class RegisterDependenciesHelper
         {
             return ServiceLifetime.Singleton;
         }
-        
+
         return ServiceLifetime.Transient;
     }
 
