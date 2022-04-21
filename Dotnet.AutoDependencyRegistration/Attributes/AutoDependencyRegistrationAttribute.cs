@@ -1,7 +1,7 @@
 ﻿using System;
-
-namespace Dotnet.AutoDependencyRegistration.Extensions.Attributes;
 using Microsoft.Extensions.DependencyInjection;
+
+namespace Dotnet.AutoDependencyRegistration.Attributes;
 
 [AttributeUsage(AttributeTargets.Class)]
 public class RegisterClass : Attribute

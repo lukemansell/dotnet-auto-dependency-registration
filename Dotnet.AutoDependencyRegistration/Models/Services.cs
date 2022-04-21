@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Dotnet.AutoDependencyRegistration.Extensions.Models;
+namespace Dotnet.AutoDependencyRegistration.Models;
 
 public class ClassesToRegister
 {

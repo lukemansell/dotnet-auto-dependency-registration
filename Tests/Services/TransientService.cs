@@ -1,4 +1,4 @@
-﻿using Dotnet.AutoDependencyRegistration.Extensions.Attributes;
+﻿using Dotnet.AutoDependencyRegistration.Attributes;
 
 namespace Tests.Services;
 

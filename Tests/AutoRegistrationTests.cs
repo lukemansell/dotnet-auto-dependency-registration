@@ -1,4 +1,4 @@
-using Dotnet.AutoDependencyRegistration.Extensions;
+using Dotnet.AutoDependencyRegistration;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
@@ -18,7 +18,7 @@ TransientService, ITransientService has been registered as Transient.
 ";
 
         // Act
-        var results = collection.AutoRegister();
+        var results = collection.AutoRegisterDependencies();
         
         // Assert
         results.Should().BeEquivalentTo(expected);

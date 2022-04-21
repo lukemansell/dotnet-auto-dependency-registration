@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Dotnet.AutoDependencyRegistration.Extensions.Attributes;
+namespace Dotnet.AutoDependencyRegistration.Attributes;
 
 public class RegisterClassAsTransient : RegisterClass
 {
