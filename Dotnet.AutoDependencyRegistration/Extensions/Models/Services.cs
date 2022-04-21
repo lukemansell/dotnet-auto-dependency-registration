@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Dotnet.AutoDependencyRegistration.Extensions.Models;
 
-public class ServicesToRegister
+public class ClassesToRegister
 {
     public Type? ClassName { get; set; }
     

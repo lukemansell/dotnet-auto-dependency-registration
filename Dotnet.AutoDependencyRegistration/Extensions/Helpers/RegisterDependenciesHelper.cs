@@ -11,11 +11,11 @@ namespace Dotnet.AutoDependencyRegistration.Extensions.Helpers;
 public static class RegisterDependenciesHelper
 {
     /// <summary>
-    /// Finds all of the classe
+    /// Finds all of the classes which have a base attribute of <see cref="RegisterClass"/>.
     /// </summary>
     /// <param name="assembly"></param>
     /// <returns></returns>
-    public static IEnumerable<ServicesToRegister> FindRegisteredClassesByAttribute(IEnumerable<Assembly> assembly)
+    public static IEnumerable<ClassesToRegister> FindRegisteredClassesByAttribute(IEnumerable<Assembly> assembly)
     {
         var classes = assembly.
             SelectMany(x => x.GetTypes())
@@ -27,9 +27,14 @@ public static class RegisterDependenciesHelper
 
     }
 
-    private static IEnumerable<ServicesToRegister> MapAssembliesToModel(IEnumerable<Type> classes)
+    /// <summary>
+    /// Maps found assemblies to an internal ClassestoRegister object
+    /// </summary>
+    /// <param name="classes"></param>
+    /// <returns></returns>
+    private static IEnumerable<ClassesToRegister> MapAssembliesToModel(IEnumerable<Type> classes)
     {
-        var mappedClasses = classes.Select((x => new ServicesToRegister()
+        var mappedClasses = classes.Select((x => new ClassesToRegister()
         {
             ClassName = x,
             InterfaceName = x.GetTypeInfo().ImplementedInterfaces.FirstOrDefault(),

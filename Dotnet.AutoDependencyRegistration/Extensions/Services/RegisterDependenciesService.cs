@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Text;
 using Dotnet.AutoDependencyRegistration.Extensions.Helpers;
 using Dotnet.AutoDependencyRegistration.Extensions.Models;
@@ -13,14 +12,14 @@ public static class RegisterDependenciesService
 {
     public static string Register(IServiceCollection serviceCollection)
     {
-        Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+        var assemblies = AppDomain.CurrentDomain.GetAssemblies();
         
-        var discoveredServices = RegisterDependenciesHelper.FindRegisteredClassesByAttribute(assemblies);
+        var discoveredClasses = RegisterDependenciesHelper.FindRegisteredClassesByAttribute(assemblies);
         
-        return RegisterServices(discoveredServices, serviceCollection);
+        return RegisterServices(discoveredClasses, serviceCollection);
     }
-    
-    private static string RegisterServices(IEnumerable<ServicesToRegister> servicesEnumerable, IServiceCollection serviceCollection)
+
+    private static string RegisterServices(IEnumerable<ClassesToRegister> servicesEnumerable, IServiceCollection serviceCollection)
     {
         Log.Logger = new LoggerConfiguration()
             .WriteTo.Console()
@@ -32,7 +31,6 @@ public static class RegisterDependenciesService
         {
             if (service.ClassName != null && service.InterfaceName != null)
             {
-                // If for any reason a service can't be registered an error will automatically be thrown
                 serviceCollection.Add(
                     new ServiceDescriptor(
                         service.InterfaceName, 
@@ -41,7 +39,7 @@ public static class RegisterDependenciesService
                 );
             }
             
-            var message = $"{service.ClassName}, {service.InterfaceName} has been registered as {service.ServiceLifetime}. ";
+            var message = $"{service.ClassName?.Name}, {service.InterfaceName?.Name} has been registered as {service.ServiceLifetime}. ";
             Log.Logger.Information("{Message}",message);
             
             classesRegistered.AppendLine(message);

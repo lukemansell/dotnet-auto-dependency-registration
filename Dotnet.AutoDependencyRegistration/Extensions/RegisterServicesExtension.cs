@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Dotnet.AutoDependencyRegistration.Extensions;
 
-public static class RegisterServicesExtension
+public static class RegisterClassesExtension
 {
     /// <summary>
     /// Registers all classes which have [RegisterClassAsScoped], [RegisterClassAsSingleton] or [RegisterClassAsTransient]
@@ -12,7 +12,7 @@ public static class RegisterServicesExtension
     /// </summary>
     /// <param name="services"></param>
     /// <returns>A string where you can see a list of registered classes if you put a breakpoint over the implementation</returns>
-    public static string RegisterServices (
+    public static string AutoRegister (
         this IServiceCollection services)
     {
         return RegisterDependenciesService.Register(services);
