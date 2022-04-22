@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Text;
 using Dotnet.AutoDependencyRegistration.Helpers;
 using Dotnet.AutoDependencyRegistration.Models;
@@ -12,13 +15,18 @@ public static class RegisterDependenciesService
 {
     public static string Register(IServiceCollection serviceCollection)
     {
-        var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+        // This isn't picking up all assemblies
+        // var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+        
+        /* A limitation of this approach is that you may end up registering services which
+        are from other packages using this package. To look into */
+        var assemblies = RegisterDependenciesHelper.GetAssemblies();
         
         var discoveredClasses = RegisterDependenciesHelper.FindRegisteredClassesByAttribute(assemblies);
         
         return RegisterServices(discoveredClasses, serviceCollection);
     }
-
+    
     private static string RegisterServices(
         IEnumerable<ClassesToRegister> servicesEnumerable,
         IServiceCollection serviceCollection)

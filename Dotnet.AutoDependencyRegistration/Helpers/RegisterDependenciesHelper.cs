@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using Dotnet.AutoDependencyRegistration.Attributes;
@@ -61,5 +62,9 @@ public static class RegisterDependenciesHelper
         return ServiceLifetime.Transient;
     }
 
-    
+    public static IEnumerable<Assembly> GetAssemblies()
+    {
+        return Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.dll")
+            .Select(x => Assembly.Load(AssemblyName.GetAssemblyName(x)));
+    }
 }
