@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
+﻿using System.Collections.Generic;
 using System.Text;
 using Dotnet.AutoDependencyRegistration.Helpers;
 using Dotnet.AutoDependencyRegistration.Models;
