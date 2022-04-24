@@ -1,5 +1,9 @@
 # Dotnet Auto Dependency Registration Extension
 
+**Version 1.0.0-alpha:** This package is currently in an alpha pre-release. Feel free to install and play around with this package on your own project, but I would advise not putting it into a production application until 2.0.0 when it is considered stable.
+
+---
+
 ## Summary
 This NuGet package helps to easily register classes without having to add a whole bunch of lines such as `service.AddScoped<IService, Service>()`. In projects which contain a number of services, this can inflate your code with potentially tens to hundreds of lines.
 
@@ -122,3 +126,4 @@ public class Class1 : IClass1
 ```
 
 In this situation the first attribute will always be used, so the class in this example will be registered as Transient.
+
