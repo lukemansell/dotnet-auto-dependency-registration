@@ -25,11 +25,20 @@ public static class RegisterDependenciesHelper
                 );
         
         return MapAssembliesToModel(classes);
-
+    }
+    
+    /// <summary>
+    /// Returns an list of assemblies found by checking the base directory for all DLLs.
+    /// </summary>
+    /// <returns>List of assemblies</returns>
+    public static IEnumerable<Assembly> GetAssemblies()
+    {
+        return Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.dll")
+            .Select(x => Assembly.Load(AssemblyName.GetAssemblyName(x)));
     }
 
     /// <summary>
-    /// Maps found assemblies to an internal ClassestoRegister object
+    /// Maps found assemblies to an ClassesToRegister object
     /// </summary>
     /// <param name="classes"></param>
     /// <returns></returns>
@@ -47,24 +56,16 @@ public static class RegisterDependenciesHelper
 
     private static ServiceLifetime SetServiceLifetime(string customAttribute)
     {
-        if (customAttribute.Contains(
-                "RegisterClassAsScoped"))
+        if (customAttribute.Contains("RegisterClassAsScoped"))
         {
             return ServiceLifetime.Scoped;
         }
 
-        if (customAttribute.Contains(
-                "RegisterClassAsSingleton"))
+        if (customAttribute.Contains("RegisterClassAsSingleton"))
         {
             return ServiceLifetime.Singleton;
         }
-
+        
         return ServiceLifetime.Transient;
-    }
-
-    public static IEnumerable<Assembly> GetAssemblies()
-    {
-        return Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.dll")
-            .Select(x => Assembly.Load(AssemblyName.GetAssemblyName(x)));
     }
 }
