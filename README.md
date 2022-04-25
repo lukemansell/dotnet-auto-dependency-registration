@@ -2,6 +2,9 @@
 
 **Version 1.0.0-alpha:** This package is currently in an alpha pre-release. Feel free to install and play around with this package on your own project, but I would advise not putting it into a production application until 2.0.0 when it is considered stable.
 
+[![Version](https://img.shields.io/nuget/vpre/stax.autodependencyinjectionregistration.svg)](https://www.nuget.org/packages/stax.autodependencyinjectionregistration)
+[![Downloads](https://img.shields.io/nuget/dt/stax.autodependencyinjectionregistration.svg)](https://www.nuget.org/packages/stax.autodependencyinjectionregistration)
+
 ---
 
 ## Summary
