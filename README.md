@@ -68,7 +68,7 @@ From there, on top of your classes you have three attribute options:
 [RegisterClassAsSingleton] - Register as singleton
 ```
 
-Classes which you use these attributes **must** implement an interface, but if the class you use this attribute on does not contain an interface an error will be logged to the console on startup and no attempt will be made to register the class. **Be sure to check the logs on startup to ensure that your classes are being registered correctly and that no errors are returning**
+You are able to register classes which have interfaces and classes which don't have an interface.
 
 On startup you will see Information logs showing you what classes have been registered and with which ServiceLifetime, in the format of: "`ClassName`, `InterfaceName` has been registered as `ServiceLifetime`."
 
@@ -79,7 +79,7 @@ On startup you will see Information logs showing you what classes have been regi
 [RegisterClassAsSingleton]
 public class Class1 : IClass1
 {
-    public string DemoService()
+    public string Demo()
     {
         return "Hi!";
     }
@@ -91,7 +91,19 @@ public class Class1 : IClass1
 [RegisterClassAsTransient]
 public class Class2 : IClass2
 {
-    public string DemoService()
+    public string Demo()
+    {
+        return "Hi!";
+    }
+}
+```
+
+`Class3.cs`
+```c#
+[RegisterClassAsTransient]
+public class Class3
+{
+    public string Demo()
     {
         return "Hi!";
     }
@@ -111,6 +123,7 @@ This will cause two log entries in console on startup:
 ```
 Class1, IClass1 has been registered as Singleton
 Class2, IClass2 has been registered as Transient
+Class3 has been registered as Transient
 ```
 
 I also try to circumvent potential mistakes such as: 
