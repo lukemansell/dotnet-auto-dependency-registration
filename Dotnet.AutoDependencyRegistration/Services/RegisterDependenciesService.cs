@@ -53,8 +53,7 @@ public static class RegisterDependenciesService
                 new ServiceDescriptor(
                     service.InterfaceName, 
                     service.ClassName, 
-                    service.ServiceLifetime)
-                    );
+                    service.ServiceLifetime));
 
                 var message = $"{service.ClassName?.Name}, {service.InterfaceName?.Name} has been registered as {service.ServiceLifetime}. ";
                 Log.Logger.Information("{Message}",message);
@@ -65,7 +64,15 @@ public static class RegisterDependenciesService
             {
                 if (service.ClassName != null && service.InterfaceName == null)
                 {
-                    Log.Logger.Error("{ClassName} doesn't have an interface. You can only register classes with an interface", service.ClassName.Name);
+                    serviceCollection.Add(
+                        new ServiceDescriptor(
+                            service.ClassName,
+                            service.ServiceLifetime));
+                    
+                    var message = $"{service.ClassName?.Name} has been registered as {service.ServiceLifetime}. ";
+                    Log.Logger.Information("{Message}",message);
+                    
+                    classesRegistered.AppendLine(message);
                 }
             }
         }
