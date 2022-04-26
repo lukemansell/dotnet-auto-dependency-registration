@@ -68,9 +68,11 @@ From there, on top of your classes you have three attribute options:
 [RegisterClassAsSingleton] - Register as singleton
 ```
 
+_You are also able to use the base attribute `[RegisterClass]` which defaults to transient._
+
 You are able to register classes which have interfaces and classes which don't have an interface.
 
-On startup you will see Information logs showing you what classes have been registered and with which ServiceLifetime, in the format of: "`ClassName`, `InterfaceName` has been registered as `ServiceLifetime`."
+On startup you will see Information logs showing you what classes have been registered and with which ServiceLifetime, in the format of: "`ClassName`, `InterfaceName` has been registered as `ServiceLifetime`." or "`ClassName` has been registered as `ServiceLifetime`."
 
 #### Practical example
 

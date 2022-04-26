@@ -54,6 +54,11 @@ public static class RegisterDependenciesHelper
         return mappedClasses;
     }
 
+    /// <summary>
+    /// Maps the name of the attribute above the class to a <see cref="ServiceLifetime"/>
+    /// </summary>
+    /// <param name="customAttribute">The custom attribute above the class for auto registration</param>
+    /// <returns></returns>
     private static ServiceLifetime SetServiceLifetime(string customAttribute)
     {
         if (customAttribute.Contains("RegisterClassAsScoped"))

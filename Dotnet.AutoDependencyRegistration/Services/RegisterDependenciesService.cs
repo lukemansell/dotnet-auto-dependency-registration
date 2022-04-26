@@ -17,11 +17,6 @@ public static class RegisterDependenciesService
     /// <returns></returns>
     public static string Register(IServiceCollection serviceCollection)
     {
-        // This isn't picking up all assemblies
-        // var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-        
-        /* A limitation of this approach is that you may end up registering services which
-        are from other packages using this package. To look into */
         var assemblies = RegisterDependenciesHelper.GetAssemblies();
         
         var filterClasses = RegisterDependenciesHelper.FindRegisteredClassesByAttribute(assemblies);
