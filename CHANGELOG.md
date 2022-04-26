@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.0] - 2022-04-27
 Stable release.
+### Changed
+* Updated root namespace from Dotnet.AutoDependencyRegistration to AutoDependencyRegistration. Breaking change.
 
 ## [1.1.0-alpha] - 2022-04-26
 ### Added
