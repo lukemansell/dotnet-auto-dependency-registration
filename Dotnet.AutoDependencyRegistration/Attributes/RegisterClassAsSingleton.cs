@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Dotnet.AutoDependencyRegistration.Attributes;
+namespace AutoDependencyRegistration.Attributes;
 
 /// <summary>
 /// [RegisterClassAsSingleton] attribute which can be added on top of any

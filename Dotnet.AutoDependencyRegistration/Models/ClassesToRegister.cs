@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Dotnet.AutoDependencyRegistration.Models;
+namespace AutoDependencyRegistration.Models;
 
 /// <summary>
 /// Object used to store the class name, interface name and service

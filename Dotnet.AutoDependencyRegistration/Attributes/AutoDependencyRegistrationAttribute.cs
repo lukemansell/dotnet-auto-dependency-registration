@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Dotnet.AutoDependencyRegistration.Attributes;
+namespace AutoDependencyRegistration.Attributes;
 
 /// <summary>
 /// Base attribute, used by <see cref="RegisterClassAsScoped"/>, <see cref="RegisterClassAsSingleton"/> and

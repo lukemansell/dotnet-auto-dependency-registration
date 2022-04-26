@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Dotnet.AutoDependencyRegistration.Attributes;
-using Dotnet.AutoDependencyRegistration.Models;
+using AutoDependencyRegistration.Attributes;
+using AutoDependencyRegistration.Models;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Dotnet.AutoDependencyRegistration.Helpers;
+namespace AutoDependencyRegistration.Helpers;
 
 public static class RegisterDependenciesHelper
 {
@@ -54,6 +54,11 @@ public static class RegisterDependenciesHelper
         return mappedClasses;
     }
 
+    /// <summary>
+    /// Maps the name of the attribute above the class to a <see cref="ServiceLifetime"/>
+    /// </summary>
+    /// <param name="customAttribute">The custom attribute above the class for auto registration</param>
+    /// <returns></returns>
     private static ServiceLifetime SetServiceLifetime(string customAttribute)
     {
         if (customAttribute.Contains("RegisterClassAsScoped"))
