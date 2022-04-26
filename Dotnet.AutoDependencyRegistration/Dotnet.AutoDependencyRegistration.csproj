@@ -17,6 +17,7 @@
         <PackageReleaseNotes>https://github.com/lukemansell/dotnet-auto-dependency-registration/blob/main/CHANGELOG.md</PackageReleaseNotes>
         <PackageTags>dependency;injection;auto;registration;di</PackageTags>
         <PackageId>Stax.AutoDependencyInjectionRegistration</PackageId>
+        <RootNamespace>AutoDependencyRegistration</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

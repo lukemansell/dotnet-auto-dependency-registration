@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Text;
-using Dotnet.AutoDependencyRegistration.Helpers;
-using Dotnet.AutoDependencyRegistration.Models;
+using AutoDependencyRegistration.Helpers;
+using AutoDependencyRegistration.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 
-namespace Dotnet.AutoDependencyRegistration.Services;
+namespace AutoDependencyRegistration.Services;
 
 public static class RegisterDependenciesService
 {

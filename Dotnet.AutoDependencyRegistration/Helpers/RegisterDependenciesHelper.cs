@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Dotnet.AutoDependencyRegistration.Attributes;
-using Dotnet.AutoDependencyRegistration.Models;
+using AutoDependencyRegistration.Attributes;
+using AutoDependencyRegistration.Models;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Dotnet.AutoDependencyRegistration.Helpers;
+namespace AutoDependencyRegistration.Helpers;
 
 public static class RegisterDependenciesHelper
 {

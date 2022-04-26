@@ -1,7 +1,7 @@
-﻿using Dotnet.AutoDependencyRegistration.Services;
+﻿using AutoDependencyRegistration.Services;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Dotnet.AutoDependencyRegistration;
+namespace AutoDependencyRegistration;
 
 public static class RegisterClassesExtension
 {

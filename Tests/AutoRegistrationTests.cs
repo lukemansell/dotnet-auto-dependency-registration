@@ -1,4 +1,4 @@
-using Dotnet.AutoDependencyRegistration;
+using AutoDependencyRegistration;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
