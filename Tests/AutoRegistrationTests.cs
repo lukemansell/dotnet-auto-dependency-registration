@@ -12,7 +12,8 @@ public class AutoRegistrationTests
     {
         // Arrange
         var collection = new ServiceCollection();
-        var expected = @"ScopedService, IScopedService has been registered as Scoped. 
+        const string expected = @"ReferenceSingleton has been registered as Singleton. 
+ScopedService, IScopedService has been registered as Scoped. 
 SingletonService, ISingletonService has been registered as Singleton. 
 TransientClass has been registered as Transient. 
 TransientService, ITransientService has been registered as Transient. 
