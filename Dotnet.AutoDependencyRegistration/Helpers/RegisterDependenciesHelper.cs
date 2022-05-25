@@ -47,7 +47,7 @@ public static class RegisterDependenciesHelper
         {
             ClassName = x.GetTypeInfo(),
             InterfaceName = x.GetTypeInfo().ImplementedInterfaces.FirstOrDefault(),
-            ServiceLifetime = SetServiceLifetime(x.CustomAttributes?.FirstOrDefault()?.AttributeType?.FullName ?? "")
+            ServiceLifetime = SetServiceLifetime(x.CustomAttributes?.FirstOrDefault(a => a.AttributeType.FullName.Contains("AutoDependencyRegistration"))?.AttributeType?.FullName ?? "")
         }));
 
         return mappedClasses;
