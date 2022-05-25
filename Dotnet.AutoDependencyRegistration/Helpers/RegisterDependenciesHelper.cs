@@ -20,9 +20,8 @@ public static class RegisterDependenciesHelper
     {
         var classes = assembly.
             SelectMany(x => x.GetTypes())
-            .Where(
-                type => type.GetCustomAttributes(typeof(RegisterClass), true).Length > 0
-                );
+            .Where(type => type.GetCustomAttributes(typeof(RegisterClass), true).Length > 0)
+            .Where(x => !x.IsAbstract && !x.IsInterface && !x.IsGenericType);
         
         return MapAssembliesToModel(classes);
     }
@@ -46,7 +45,7 @@ public static class RegisterDependenciesHelper
     {
         var mappedClasses = classes.Select((x => new ClassesToRegister
         {
-            ClassName = x,
+            ClassName = x.GetTypeInfo(),
             InterfaceName = x.GetTypeInfo().ImplementedInterfaces.FirstOrDefault(),
             ServiceLifetime = SetServiceLifetime(x.CustomAttributes?.FirstOrDefault()?.AttributeType?.FullName ?? "")
         }));
