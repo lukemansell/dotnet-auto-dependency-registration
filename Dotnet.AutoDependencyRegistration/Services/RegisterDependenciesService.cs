@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using AutoDependencyRegistration.Helpers;
 using AutoDependencyRegistration.Models;
@@ -42,18 +43,20 @@ public static class RegisterDependenciesService
 
         foreach (var service in services)
         {
-            if (service.ClassName != null && service.InterfaceName != null)
+            if (service.ClassName != null && service.InterfaceName.FirstOrDefault() != null)
             {
-                serviceCollection.Add(
-                new ServiceDescriptor(
-                    service.InterfaceName, 
-                    service.ClassName, 
-                    service.ServiceLifetime));
-
-                var message = $"{service.ClassName?.Name}, {service.InterfaceName?.Name} has been registered as {service.ServiceLifetime}. ";
-                Log.Logger.Information("{Message}",message);
-            
-                classesRegistered.AppendLine(message);
+                foreach (var implementation in service.InterfaceName)
+                {
+                    serviceCollection.Add(
+                        new ServiceDescriptor(
+                            implementation, 
+                            service.ClassName, 
+                            service.ServiceLifetime));
+                    
+                    var message = $"{service.ClassName?.Name}, {implementation} has been registered as {service.ServiceLifetime}. ";
+                    Log.Logger.Information("{Message}",message);
+                    classesRegistered.AppendLine(message);
+                }
             }
             else
             {
