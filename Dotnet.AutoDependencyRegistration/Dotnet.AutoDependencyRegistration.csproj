@@ -13,7 +13,7 @@
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <RepositoryType>GitHub</RepositoryType>
-        <PackageVersion>2.0.1</PackageVersion>
+        <PackageVersion>2.1.0</PackageVersion>
         <PackageReleaseNotes>https://github.com/lukemansell/dotnet-auto-dependency-registration/blob/main/CHANGELOG.md</PackageReleaseNotes>
         <PackageTags>dependency;injection;auto;registration;di</PackageTags>
         <PackageId>Stax.AutoDependencyInjectionRegistration</PackageId>

@@ -19,10 +19,9 @@ public static class RegisterDependenciesHelper
     public static IEnumerable<ClassesToRegister> FindRegisteredClassesByAttribute(IEnumerable<Assembly> assembly)
     {
         var classes = assembly.
-            SelectMany(x => x.GetTypes())
-            .Where(
-                type => type.GetCustomAttributes(typeof(RegisterClass), true).Length > 0
-                );
+            SelectMany(x => x.GetExportedTypes())
+            .Where(type => type.GetCustomAttributes(typeof(RegisterClass), true).Length > 0)
+            .Where(x => !x.IsAbstract && !x.IsGenericType && !x.IsNested);
         
         return MapAssembliesToModel(classes);
     }
@@ -46,8 +45,8 @@ public static class RegisterDependenciesHelper
     {
         var mappedClasses = classes.Select((x => new ClassesToRegister
         {
-            ClassName = x,
-            InterfaceName = x.GetTypeInfo().ImplementedInterfaces.FirstOrDefault(),
+            ClassName = x.GetTypeInfo(),
+            InterfaceName = x.GetTypeInfo().ImplementedInterfaces.ToList(),
             ServiceLifetime = SetServiceLifetime(x.CustomAttributes?.FirstOrDefault(a => a.AttributeType.FullName.Contains("AutoDependencyRegistration"))?.AttributeType?.FullName ?? "")
         }));
 
