@@ -1,4 +1,5 @@
 ﻿using AutoDependencyRegistration.Attributes;
+using Tests.Services.Interfaces;
 
 namespace Tests.Services;
 

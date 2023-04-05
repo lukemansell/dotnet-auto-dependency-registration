@@ -11,5 +11,5 @@ namespace AutoDependencyRegistration.Attributes;
 [AttributeUsage(AttributeTargets.Class)]
 public class RegisterClass : Attribute
 {
-    public ServiceLifetime ServiceLifetime { get; set; } = ServiceLifetime.Transient;
+    protected ServiceLifetime ServiceLifetime { get; set; } = ServiceLifetime.Transient;
 }

@@ -3,8 +3,8 @@ using Tests.Services.Interfaces;
 
 namespace Tests.Services;
 
-[RegisterClassAsSingleton]
-public class SingletonService : ISingletonService
+[RegisterClassAsScopedIgnoreInterface]
+public class ScopedServiceIgnoreInterface : IDummyInterface
 {
     public string DemoService()
     {

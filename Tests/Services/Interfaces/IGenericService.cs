@@ -1,4 +1,4 @@
-﻿namespace Tests.Services;
+﻿namespace Tests.Services.Interfaces;
 
 public interface IGenericService<T>
 {
