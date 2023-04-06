@@ -15,4 +15,6 @@ public class ClassesToRegister
     public IEnumerable<Type> InterfaceName { get; set; }
     
     public ServiceLifetime ServiceLifetime { get; set; }
+    
+    public bool IgnoreInterface { get; set; }
 }

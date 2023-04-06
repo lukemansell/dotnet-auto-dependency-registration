@@ -6,75 +6,72 @@ using AutoDependencyRegistration.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 
-namespace AutoDependencyRegistration.Services;
-
-public static class RegisterDependenciesService
+namespace AutoDependencyRegistration.Services
 {
-    /// <summary>
-    /// Service method which calls helper methods to get all assemblies, filter classes within
-    /// these which have a RegisterClass base attribute and then registers the classes.
-    /// </summary>
-    /// <param name="serviceCollection"></param>
-    /// <returns></returns>
-    public static string Register(IServiceCollection serviceCollection)
+    public static class RegisterDependenciesService
     {
-        var assemblies = RegisterDependenciesHelper.GetAssemblies();
-        
-        var filterClasses = RegisterDependenciesHelper.FindRegisteredClassesByAttribute(assemblies);
-        
-        return RegisterServices(filterClasses, serviceCollection);
-    }
-    
-    /// <summary>
-    /// Logs and also adds discovered classes to the service collection. If classes are found
-    /// with a name but no interface they are logged out for the user to understand why they
-    /// were not added to the service collection.
-    /// </summary>
-    /// <param name="services"></param>
-    /// <param name="serviceCollection"></param>
-    /// <returns>A string of classes which have been registered</returns>
-    private static string RegisterServices(
-        IEnumerable<ClassesToRegister> services,
-        IServiceCollection serviceCollection)
-    {
-        Log.Logger = new LoggerConfiguration().WriteTo.Console().CreateBootstrapLogger();
-
-        var classesRegistered = new StringBuilder();
-
-        foreach (var service in services)
+        public static string Register(IServiceCollection serviceCollection)
         {
-            if (service.ClassName != null && service.InterfaceName.FirstOrDefault() != null)
+            var assemblies = RegisterDependenciesHelper.GetAssemblies();
+            var filterClasses = RegisterDependenciesHelper.FindRegisteredClassesByAttribute(assemblies);
+            return RegisterServices(filterClasses, serviceCollection);
+        }
+
+        private static string RegisterServices(
+            IEnumerable<ClassesToRegister> services,
+            IServiceCollection serviceCollection)
+        {
+            Log.Logger = new LoggerConfiguration().WriteTo.Console().CreateBootstrapLogger();
+            var classesRegistered = new StringBuilder();
+
+            foreach (var service in services)
             {
-                foreach (var implementation in service.InterfaceName)
+                if (service.ClassName != null && service.InterfaceName.FirstOrDefault() != null && !service.IgnoreInterface)
                 {
-                    serviceCollection.Add(
-                        new ServiceDescriptor(
-                            implementation, 
-                            service.ClassName, 
-                            service.ServiceLifetime));
-                    
-                    var message = $"{service.ClassName?.Name}, {implementation} has been registered as {service.ServiceLifetime}. ";
-                    Log.Logger.Information("{Message}",message);
-                    classesRegistered.AppendLine(message);
+                    AddServiceWithInterface(service, serviceCollection, classesRegistered);
+                }
+                else if (service is { ClassName: { }, InterfaceName: null } or { ClassName: { }, IgnoreInterface: true })
+                {
+                    AddServiceWithoutInterface(service, serviceCollection, classesRegistered);
                 }
             }
-            else
+
+            return classesRegistered.ToString();
+        }
+
+        private static void AddServiceWithInterface(
+            ClassesToRegister service,
+            IServiceCollection serviceCollection,
+            StringBuilder classesRegistered)
+        {
+            foreach (var implementation in service.InterfaceName)
             {
-                if (service.ClassName != null && service.InterfaceName == null)
-                {
-                    serviceCollection.Add(
-                        new ServiceDescriptor(
-                            service.ClassName,
-                            service.ServiceLifetime));
-                    
-                    var message = $"{service.ClassName?.Name} has been registered as {service.ServiceLifetime}. ";
-                    Log.Logger.Information("{Message}",message);
-                    
-                    classesRegistered.AppendLine(message);
-                }
+                serviceCollection.Add(
+                    new ServiceDescriptor(
+                        implementation,
+                        service.ClassName,
+                        service.ServiceLifetime));
+
+                var message = $"{service.ClassName?.Name}, {implementation} has been registered as {service.ServiceLifetime}. ";
+                Log.Logger.Information("{Message}", message);
+                classesRegistered.AppendLine(message);
             }
         }
 
-        return classesRegistered.ToString();
+        private static void AddServiceWithoutInterface(
+            ClassesToRegister service,
+            IServiceCollection serviceCollection,
+            StringBuilder classesRegistered)
+        {
+            serviceCollection.Add(
+                new ServiceDescriptor(
+                    service.ClassName,
+                    service.ClassName,
+                    service.ServiceLifetime));
+
+            var message = $"{service.ClassName?.Name} has been registered as {service.ServiceLifetime}. ";
+            Log.Logger.Information("{Message}", message);
+            classesRegistered.AppendLine(message);
+        }
     }
 }

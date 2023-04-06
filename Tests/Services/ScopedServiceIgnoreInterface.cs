@@ -1,10 +1,10 @@
 ﻿using AutoDependencyRegistration.Attributes;
-using Tests.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Tests.Services;
 
-[RegisterClassAsSingleton]
-public class SingletonService : ISingletonService
+[RegisterClassAsScopedIgnoreInterface]
+public class ScopedServiceIgnoreInterface : ActionFilterAttribute
 {
     public string DemoService()
     {
