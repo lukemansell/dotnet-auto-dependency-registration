@@ -66,6 +66,7 @@ namespace AutoDependencyRegistration.Services
             serviceCollection.Add(
                 new ServiceDescriptor(
                     service.ClassName,
+                    service.ClassName,
                     service.ServiceLifetime));
 
             var message = $"{service.ClassName?.Name} has been registered as {service.ServiceLifetime}. ";
