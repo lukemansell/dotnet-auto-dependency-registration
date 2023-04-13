@@ -1,4 +1,4 @@
-# Dotnet Auto Dependency Registration Extension
+# Attribute Based Dependency Injection for .NET
 
 [![Version](https://img.shields.io/nuget/vpre/stax.autodependencyinjectionregistration.svg)](https://www.nuget.org/packages/stax.autodependencyinjectionregistration)
 [![Downloads](https://img.shields.io/nuget/dt/stax.autodependencyinjectionregistration.svg)](https://www.nuget.org/packages/stax.autodependencyinjectionregistration)
@@ -7,7 +7,7 @@
 ## Summary
 This [NuGet library](https://www.nuget.org/packages/Stax.AutoDependencyInjectionRegistration/) helps to easily register classes without having to add a whole bunch of lines such as `service.AddScoped<IService, Service>()`. In projects which contain a number of services, this can inflate your code with potentially tens to hundreds of lines.
 
-Dotnet Auto Dependency Registration Extension makes this easy. All you need is to add `services.AutoRegisterDependencies();` within your programs `ConfigureServices` method and then add attributes above your classes to register them as either Transient, Scoped or Singleton (examples below of how to do this). Dotnet Auto Dependency Registration will take care of the rest without you having to specify assemblies or service name structures for it to pick up.
+Attribute Based Dependency Injection makes this easy. All you need is to add `services.AutoRegisterDependencies();` within your programs `ConfigureServices` method and then add attributes above your classes to register them as either Transient, Scoped or Singleton (examples below of how to do this). Dotnet Auto Dependency Registration will take care of the rest without you having to specify assemblies or service name structures for it to pick up.
 
 ## Why I have written this
 While they are a handful of auto DI registration solutions out there, not many of them make it as easy as we were hoping in a project I was working on as we were using a number of projects and didn't want to have to specify a bunch of assemblies and also service name structures to automatically pick up.
@@ -144,4 +144,3 @@ public class Class1 : IClass1
 ```
 
 In this situation the first attribute will always be used, so the class in this example will be registered as Transient.
-
