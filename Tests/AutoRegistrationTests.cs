@@ -17,6 +17,7 @@ ScopedService, Tests.Services.Interfaces.IScopedService has been registered as S
 ScopedServiceIgnoreInterface has been registered as Scoped. 
 SingletonService, Tests.Services.Interfaces.ISingletonService has been registered as Singleton. 
 SingletonServiceIgnoreInterface has been registered as Singleton. 
+TransientClass has been registered as Transient. 
 TransientService, Tests.Services.Interfaces.ITransientService has been registered as Transient. 
 TransientServiceIgnoreInterface has been registered as Transient. 
 ";

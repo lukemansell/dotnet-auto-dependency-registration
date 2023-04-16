@@ -26,11 +26,12 @@ namespace AutoDependencyRegistration.Services
 
             foreach (var service in services)
             {
-                if (service.ClassName != null && service.InterfaceName.FirstOrDefault() != null && !service.IgnoreInterface)
+                if (service.ClassName != null && service.InterfaceName.Any() && !service.IgnoreInterface)
                 {
                     AddServiceWithInterface(service, serviceCollection, classesRegistered);
                 }
-                else if (service is { ClassName: { }, InterfaceName: null } or { ClassName: { }, IgnoreInterface: true })
+                else if ((service.ClassName != null && !service.InterfaceName.Any()) 
+                         || service is { ClassName: { }, IgnoreInterface: true }) 
                 {
                     AddServiceWithoutInterface(service, serviceCollection, classesRegistered);
                 }
