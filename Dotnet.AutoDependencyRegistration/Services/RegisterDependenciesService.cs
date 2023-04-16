@@ -30,7 +30,7 @@ namespace AutoDependencyRegistration.Services
                 {
                     AddServiceWithInterface(service, serviceCollection, classesRegistered);
                 }
-                else if (service is { ClassName: { }, InterfaceName: null } or { ClassName: { }, IgnoreInterface: true })
+                else if ((service.ClassName != null && !service.InterfaceName.Any()) || service is { ClassName: { }, IgnoreInterface: true }) 
                 {
                     AddServiceWithoutInterface(service, serviceCollection, classesRegistered);
                 }
