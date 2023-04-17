@@ -15,7 +15,7 @@ namespace AutoDependencyRegistration.Helpers
         {
             var classes = assembly
                 .SelectMany(x => x.GetExportedTypes())
-                .Where(FilterClassesWithRegisterClassAttribute);
+                .Where(HasRegisterClassAttribute);
 
             return MapAssembliesToModel(classes);
         }
@@ -26,10 +26,10 @@ namespace AutoDependencyRegistration.Helpers
                 .Select(x => Assembly.Load(AssemblyName.GetAssemblyName(x)));
         }
 
-        private static bool FilterClassesWithRegisterClassAttribute(Type type)
+        private static bool HasRegisterClassAttribute(Type type)
         {
-            return type.GetCustomAttributes(typeof(RegisterClass), true).Any() &&
-                   !type.IsAbstract && !type.IsGenericType && !type.IsNested;
+            return type.GetCustomAttribute<RegisterClass>(true) != null &&
+                   type is { IsAbstract: false, IsGenericType: false, IsNested: false };
         }
 
         private static IEnumerable<ClassesToRegister> MapAssembliesToModel(IEnumerable<Type> classes)
@@ -39,38 +39,29 @@ namespace AutoDependencyRegistration.Helpers
                 var attribute = x.CustomAttributes
                     .FirstOrDefault(a => a.AttributeType.BaseType == typeof(RegisterClass));
                 
-                var serviceLifetime = GetServiceLifetime(attribute.AttributeType);
-                var ignoreInterface = CheckForIgnoreInterface(attribute);
-
                 return new ClassesToRegister
                 {
                     ClassName = x.GetTypeInfo(),
                     InterfaceName = x.GetTypeInfo().ImplementedInterfaces.ToList(),
-                    ServiceLifetime = serviceLifetime,
-                    IgnoreInterface = ignoreInterface
+                    ServiceLifetime = GetServiceLifetime(attribute.AttributeType),
+                    IgnoreInterface = CheckForIgnoreInterface(attribute)
                 };
             });
         }
 
         private static ServiceLifetime GetServiceLifetime(Type customAttribute)
         {
-            var declaredAttribute = customAttribute;
-            if (declaredAttribute == typeof(RegisterClassAsScoped))
+            return customAttribute switch
             {
-                return ServiceLifetime.Scoped;
-            }
-
-            if (declaredAttribute == typeof(RegisterClassAsSingleton))
-            {
-                return ServiceLifetime.Singleton;
-            }
-
-            return ServiceLifetime.Transient;
+                _ when customAttribute == typeof(RegisterClassAsScoped) => ServiceLifetime.Scoped,
+                _ when customAttribute == typeof(RegisterClassAsSingleton) => ServiceLifetime.Singleton,
+                _ => ServiceLifetime.Transient
+            };
         }
 
         private static bool CheckForIgnoreInterface(CustomAttributeData? attribute)
         {
-            return attribute.NamedArguments.Select(x => x.MemberName == "ExcludeInterface").FirstOrDefault();
+            return attribute.NamedArguments.FirstOrDefault(x => x.MemberName == "ExcludeInterface").TypedValue.Value as bool? ?? false;
         }
     }
 }
