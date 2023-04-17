@@ -3,7 +3,7 @@ using Tests.Services.Interfaces;
 
 namespace Tests.Services;
 
-[RegisterClassAsTransientIgnoreInterface]
+[RegisterClassAsTransient(ExcludeInterface = true)]
 public class TransientServiceIgnoreInterface : IDummyInterface
 {
     public string DemoService()

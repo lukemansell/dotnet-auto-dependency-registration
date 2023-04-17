@@ -37,10 +37,10 @@ namespace AutoDependencyRegistration.Helpers
             return classes.Select(x =>
             {
                 var attribute = x.CustomAttributes
-                    .FirstOrDefault(a => a.AttributeType.FullName.Contains("AutoDependencyRegistration"));
-
-                var serviceLifetime = GetServiceLifetime(attribute?.AttributeType?.FullName ?? "");
-                var ignoreInterface = GetIgnoreInterfaceFlag(attribute?.AttributeType?.FullName ?? "");
+                    .FirstOrDefault(a => a.AttributeType.BaseType == typeof(RegisterClass));
+                
+                var serviceLifetime = GetServiceLifetime(attribute.AttributeType);
+                var ignoreInterface = CheckForIgnoreInterface(attribute);
 
                 return new ClassesToRegister
                 {
@@ -52,14 +52,15 @@ namespace AutoDependencyRegistration.Helpers
             });
         }
 
-        private static ServiceLifetime GetServiceLifetime(string customAttribute)
+        private static ServiceLifetime GetServiceLifetime(Type customAttribute)
         {
-            if (customAttribute.Contains("RegisterClassAsScoped"))
+            var declaredAttribute = customAttribute;
+            if (declaredAttribute == typeof(RegisterClassAsScoped))
             {
                 return ServiceLifetime.Scoped;
             }
 
-            if (customAttribute.Contains("RegisterClassAsSingleton"))
+            if (declaredAttribute == typeof(RegisterClassAsSingleton))
             {
                 return ServiceLifetime.Singleton;
             }
@@ -67,9 +68,9 @@ namespace AutoDependencyRegistration.Helpers
             return ServiceLifetime.Transient;
         }
 
-        private static bool GetIgnoreInterfaceFlag(string customAttribute)
+        private static bool CheckForIgnoreInterface(CustomAttributeData? attribute)
         {
-            return customAttribute.Contains("IgnoreInterface");
+            return attribute.NamedArguments.Select(x => x.MemberName == "ExcludeInterface").FirstOrDefault();
         }
     }
 }

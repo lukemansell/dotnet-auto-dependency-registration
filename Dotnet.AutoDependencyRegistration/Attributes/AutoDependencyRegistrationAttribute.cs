@@ -11,5 +11,17 @@ namespace AutoDependencyRegistration.Attributes;
 [AttributeUsage(AttributeTargets.Class)]
 public class RegisterClass : Attribute
 {
+    internal RegisterClass()
+    {
+        
+    }
+    
+    public RegisterClass(bool excludeInterface)
+    {
+        ExcludeInterface = excludeInterface;
+    }
+    
     protected ServiceLifetime ServiceLifetime { get; set; } = ServiceLifetime.Transient;
+    
+    public bool ExcludeInterface { get; set; }
 }
