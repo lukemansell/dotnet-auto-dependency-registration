@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dotnet.AutoDependencyRegistration", "Dotnet.AutoDependencyRegistration\Dotnet.AutoDependencyRegistration.csproj", "{5904276B-3D47-4550-80D1-DBF78D787096}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stax.AutoDependencyRegistration", "Stax.AutoDependencyRegistration\Stax.AutoDependencyRegistration.csproj", "{5904276B-3D47-4550-80D1-DBF78D787096}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{2E4EAA17-CB34-442D-AD66-B666728AC273}"
 EndProject

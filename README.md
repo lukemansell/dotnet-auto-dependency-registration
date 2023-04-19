@@ -63,9 +63,9 @@ From there, on top of your classes you have three attribute options:
 [RegisterClassAsScoped] - Register as scoped
 [RegisterClassAsTransient] - Register as transient
 [RegisterClassAsSingleton] - Register as singleton
-[RegisterClassAsScopedIgnoreInterface] - Register as scoped but ignore registering the interface
-[RegisterClassAsTransientIgnoreInterface] - Register as transient but ignore registering the interface
-[RegisterClassAsSingletonIgnoreInterface] - Register as singleton but ignore registering the interface
+[RegisterClassAsScoped(ExcludeInterface = true)] - Register as scoped but ignore registering the interface
+[RegisterClassAsTransient(ExcludeInterface = true)] - Register as transient but ignore registering the interface
+[RegisterClassAsSingleton(ExcludeInterface = true)] - Register as singleton but ignore registering the interface
 ```
 
 _You are also able to use the base attribute `[RegisterClass]` which defaults to transient._

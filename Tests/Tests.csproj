@@ -22,7 +22,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Dotnet.AutoDependencyRegistration\Dotnet.AutoDependencyRegistration.csproj" />
+      <ProjectReference Include="..\Stax.AutoDependencyRegistration\Stax.AutoDependencyRegistration.csproj" />
     </ItemGroup>
 
 </Project>

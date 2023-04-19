@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Tests.Services;
 
-[RegisterClassAsScopedIgnoreInterface]
+[RegisterClassAsScoped(ExcludeInterface = true)]
 public class ScopedServiceIgnoreInterface : ActionFilterAttribute
 {
     public string DemoService()
