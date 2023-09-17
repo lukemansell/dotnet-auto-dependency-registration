@@ -22,9 +22,11 @@ namespace AutoDependencyRegistration.Services
             IServiceCollection serviceCollection)
         {
             Log.Logger = new LoggerConfiguration().WriteTo.Console().CreateBootstrapLogger();
+
             var classesRegistered = new StringBuilder();
 
-            foreach (var service in services)
+            var classesToRegisters = services.ToList();
+            foreach (var service in classesToRegisters)
             {
                 if (service.ClassName != null && service.InterfaceName.Any() && !service.IgnoreInterface)
                 {
@@ -36,7 +38,15 @@ namespace AutoDependencyRegistration.Services
                     AddServiceWithoutInterface(service, serviceCollection, classesRegistered);
                 }
             }
-
+            
+            Log.Logger.Information("{OverallCount} services were registered. " +
+                                   "{SingletonCount} singleton, {ScopedCount} scoped, {TransientCount} transient.",
+                classesToRegisters.Count(), 
+                classesToRegisters.Count(x => x.ServiceLifetime == ServiceLifetime.Singleton),
+                classesToRegisters.Count(x => x.ServiceLifetime == ServiceLifetime.Scoped),
+                classesToRegisters.Count(x => x.ServiceLifetime == ServiceLifetime.Transient)
+            );
+            
             return classesRegistered.ToString();
         }
 

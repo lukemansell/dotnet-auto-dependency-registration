@@ -6,6 +6,7 @@ using System.Reflection;
 using AutoDependencyRegistration.Attributes;
 using AutoDependencyRegistration.Models;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 
 namespace AutoDependencyRegistration.Helpers
 {
@@ -22,10 +23,22 @@ namespace AutoDependencyRegistration.Helpers
 
         public static IEnumerable<Assembly> GetAssemblies()
         {
-            return Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.dll")
-                .Select(x => Assembly.Load(AssemblyName.GetAssemblyName(x)));
-        }
+            var assemblies = new List<Assembly>();
 
+            foreach (var path in Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.dll"))
+            {
+                try
+                {
+                    assemblies.Add(Assembly.Load(AssemblyName.GetAssemblyName(path)));
+                }
+                catch (BadImageFormatException e)
+                {
+                    Log.Logger.Error("{Assembly} could not be loaded", e.Source);
+                }
+            }
+
+            return assemblies;
+        }
         private static bool FilterClassesWithRegisterClassAttribute(Type type)
         {
             return type.GetCustomAttributes(typeof(RegisterClass), true).Any() &&
