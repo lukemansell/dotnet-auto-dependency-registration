@@ -12,7 +12,8 @@ public class AutoRegistrationTests
     {
         // Arrange
         var collection = new ServiceCollection();
-        const string expected = @"ReferenceSingleton, Tests.Services.Interfaces.IReferenceSingleton has been registered as Singleton. 
+        const string expected = @"GenericService`1, Tests.Services.Interfaces.IGenericService`1[T] has been registered as Transient. 
+ReferenceSingleton, Tests.Services.Interfaces.IReferenceSingleton has been registered as Singleton. 
 ScopedService, Tests.Services.Interfaces.IScopedService has been registered as Scoped. 
 ScopedServiceIgnoreInterface has been registered as Scoped. 
 SingletonService, Tests.Services.Interfaces.ISingletonService has been registered as Singleton. 
