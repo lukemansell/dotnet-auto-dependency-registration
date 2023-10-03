@@ -42,7 +42,7 @@ namespace AutoDependencyRegistration.Helpers
         private static bool FilterClassesWithRegisterClassAttribute(Type type)
         {
             return type.GetCustomAttributes(typeof(RegisterClass), true).Any() &&
-                   !type.IsAbstract && !type.IsGenericType && !type.IsNested;
+                   !type.IsAbstract && !type.IsNested;
         }
 
         private static IEnumerable<ClassesToRegister> MapAssembliesToModel(IEnumerable<Type> classes)

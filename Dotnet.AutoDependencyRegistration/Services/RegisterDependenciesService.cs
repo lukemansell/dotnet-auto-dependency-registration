@@ -57,11 +57,22 @@ namespace AutoDependencyRegistration.Services
         {
             foreach (var implementation in service.InterfaceName)
             {
-                serviceCollection.Add(
-                    new ServiceDescriptor(
-                        implementation,
-                        service.ClassName,
-                        service.ServiceLifetime));
+                if (service.ClassName.IsGenericType)
+                {
+                    serviceCollection.Add(
+                        new ServiceDescriptor(
+                            implementation.GetGenericTypeDefinition(),
+                            service.ClassName.GetGenericTypeDefinition(),
+                            service.ServiceLifetime));
+                }
+                else
+                {
+                    serviceCollection.Add(
+                        new ServiceDescriptor(
+                            implementation,
+                            service.ClassName,
+                            service.ServiceLifetime));
+                }
 
                 var message = $"{service.ClassName?.Name}, {implementation} has been registered as {service.ServiceLifetime}. ";
                 Log.Logger.Information("{Message}", message);
@@ -74,11 +85,22 @@ namespace AutoDependencyRegistration.Services
             IServiceCollection serviceCollection,
             StringBuilder classesRegistered)
         {
-            serviceCollection.Add(
-                new ServiceDescriptor(
-                    service.ClassName,
-                    service.ClassName,
-                    service.ServiceLifetime));
+            if (service.ClassName.IsGenericType)
+            {
+                serviceCollection.Add(
+                    new ServiceDescriptor(
+                        service.ClassName.GetGenericTypeDefinition(),
+                        service.ClassName.GetGenericTypeDefinition(),
+                        service.ServiceLifetime));
+            }
+            else
+            {
+                serviceCollection.Add(
+                    new ServiceDescriptor(
+                        service.ClassName,
+                        service.ClassName,
+                        service.ServiceLifetime));
+            }
 
             var message = $"{service.ClassName?.Name} has been registered as {service.ServiceLifetime}. ";
             Log.Logger.Information("{Message}", message);
