@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [3.2.0] - 2023-10-04
+### Added
+* Support for registering generic classes `public class Generic<T> : IGeneric<T>`
+
 ## [3.1.1] - 2023-09-17
 ### Added
 * Log out a count of how many services were registered and a count by service lifetime.
