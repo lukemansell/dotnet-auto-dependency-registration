@@ -7,7 +7,13 @@
 ## Summary
 This [NuGet library](https://www.nuget.org/packages/Stax.AutoDependencyInjectionRegistration/) helps to easily register classes without having to add a whole bunch of lines such as `service.AddScoped<IService, Service>()`. In projects which contain a number of services, this can inflate your code with potentially tens to hundreds of lines.
 
-Attribute Based Dependency Injection makes this easy. All you need is to add `services.AutoRegisterDependencies();` within your programs `ConfigureServices` method and then add attributes above your classes to register them as either Transient, Scoped or Singleton (examples below of how to do this). Dotnet Auto Dependency Registration will take care of the rest without you having to specify assemblies or service name structures for it to pick up.
+Auto Dependency Registration makes this easy. All you need is to add `services.AutoRegisterDependencies();` within your programs `ConfigureServices` method and then use one of three registration methods:
+
+1. **Attribute-Based**: Add attributes like `[RegisterClassAsTransient]` above your classes
+2. **Interface-Based**: Implement marker interfaces like `ITransientDependency` 
+3. **Keyed Services** (Requires .NET 8+): Use keyed attributes like `[RegisterClassAsTransientKeyed("key")]` for multiple implementations of the same interface
+
+Dotnet Auto Dependency Registration will take care of the rest without you having to specify assemblies or service name structures for it to pick up.
 
 ## Why I have written this
 While they are a handful of auto DI registration solutions out there, not many of them make it as easy as we were hoping in a project I was working on as we were using a number of projects and didn't want to have to specify a bunch of assemblies and also service name structures to automatically pick up.
@@ -57,7 +63,11 @@ public void ConfigureServices(IServiceCollection services)
 builder.services.AutoRegisterDependencies();
 ```
 
-From there, on top of your classes you have three attribute options:
+From there, you have multiple ways to register your classes:
+
+### Attribute-Based Registration
+
+Add attributes on top of your classes:
 
 ```
 [RegisterClassAsScoped] - Register as scoped
@@ -70,11 +80,75 @@ From there, on top of your classes you have three attribute options:
 
 _You are also able to use the base attribute `[RegisterClass]` which defaults to transient._
 
+### Interface-Based Registration
+
+Alternatively, you can implement marker interfaces instead of using attributes:
+
+```csharp
+public class MyService : IMyService, ITransientDependency
+{
+    // Implementation
+}
+```
+
+Available marker interfaces:
+- `ITransientDependency` - Register as transient
+- `IScopedDependency` - Register as scoped
+- `ISingletonDependency` - Register as singleton
+- `ITransientDependencyIgnoreInterface` - Register as transient but ignore registering the interface
+- `IScopedDependencyIgnoreInterface` - Register as scoped but ignore registering the interface
+- `ISingletonDependencyIgnoreInterface` - Register as singleton but ignore registering the interface
+
+### Keyed Services (Requires .NET 8+)
+
+For keyed service registration (useful when you have multiple implementations of the same interface), use keyed attributes:
+
+```csharp
+[RegisterClassAsTransientKeyed("ServiceA")]
+public class ServiceA : IService
+{
+    // Implementation
+}
+
+[RegisterClassAsTransientKeyed("ServiceB")]
+public class ServiceB : IService
+{
+    // Implementation
+}
+```
+
+Available keyed attributes:
+- `[RegisterClassAsTransientKeyed("key")]` - Register as transient with a key
+- `[RegisterClassAsScopedKeyed("key")]` - Register as scoped with a key
+- `[RegisterClassAsSingletonKeyed("key")]` - Register as singleton with a key
+- `[RegisterClassAsTransientKeyedIgnoreInterface("key")]` - Register as transient with a key but ignore registering the interface
+- `[RegisterClassAsScopedKeyedIgnoreInterface("key")]` - Register as scoped with a key but ignore registering the interface
+- `[RegisterClassAsSingletonKeyedIgnoreInterface("key")]` - Register as singleton with a key but ignore registering the interface
+
+To resolve keyed services in .NET 8+:
+
+```csharp
+// Using IKeyedServiceProvider
+var serviceA = keyedServiceProvider.GetRequiredKeyedService<IService>("ServiceA");
+var serviceB = keyedServiceProvider.GetRequiredKeyedService<IService>("ServiceB");
+
+// Or using [FromKeyedServices] attribute in constructor injection
+public class MyController
+{
+    public MyController([FromKeyedServices("ServiceA")] IService service)
+    {
+        // service will be the ServiceA implementation
+    }
+}
+```
+
 You are able to register classes which have interfaces and classes which don't have an interface.
 
 On startup you will see Information logs showing you what classes have been registered and with which ServiceLifetime, in the format of: "`ClassName`, `InterfaceName` has been registered as `ServiceLifetime`." or "`ClassName` has been registered as `ServiceLifetime`."
 
-#### Practical example
+#### Practical examples
+
+**Attribute-Based Registration:**
 
 `Class.cs`
 ```c#
@@ -88,10 +162,11 @@ public class Class1 : IClass1
 }
 ```
 
+**Interface-Based Registration:**
+
 `Class2.cs`
 ```c#
-[RegisterClassAsTransient]
-public class Class2 : IClass2
+public class Class2 : IClass2, ITransientDependency
 {
     public string Demo()
     {
@@ -99,6 +174,34 @@ public class Class2 : IClass2
     }
 }
 ```
+
+**Keyed Services (Requires .NET 8+):**
+
+`ServiceA.cs`
+```c#
+[RegisterClassAsTransientKeyed("ServiceA")]
+public class ServiceA : IService
+{
+    public string Process()
+    {
+        return "Processing with ServiceA";
+    }
+}
+```
+
+`ServiceB.cs`
+```c#
+[RegisterClassAsTransientKeyed("ServiceB")]
+public class ServiceB : IService
+{
+    public string Process()
+    {
+        return "Processing with ServiceB";
+    }
+}
+```
+
+**Class without interface:**
 
 `Class3.cs`
 ```c#
@@ -120,11 +223,13 @@ public void ConfigureServices(IServiceCollection services)
 }
 ```
 
-This will cause two log entries in console on startup:
+This will cause log entries in console on startup:
 
 ```
 Class1, IClass1 has been registered as Singleton
 Class2, IClass2 has been registered as Transient
+ServiceA, IService has been registered as Transient with key 'ServiceA'
+ServiceB, IService has been registered as Transient with key 'ServiceB'
 Class3 has been registered as Transient
 ```
 
