@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [4.0.0] - 2025-11-30
 ### Added
-* Ability to register services through interfaces such as ITransientDepenency, IScopedDependency, ISingletonDependency
+* Ability to register services through interfaces such as ITransientDependency, IScopedDependency, ISingletonDependency
 * Support for keyed services
 
 ## [3.1.1] - 2023-09-17
