@@ -17,4 +17,10 @@ public class ClassesToRegister
     public ServiceLifetime ServiceLifetime { get; set; }
     
     public bool IgnoreInterface { get; set; }
+    
+    /// <summary>
+    /// Service key for keyed service registration. Null if not a keyed service.
+    /// Requires .NET 8 or later.
+    /// </summary>
+    public string? ServiceKey { get; set; }
 }

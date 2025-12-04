@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using AutoDependencyRegistration.Helpers;
 using AutoDependencyRegistration.Models;
@@ -21,7 +23,7 @@ namespace AutoDependencyRegistration.Services
             IEnumerable<ClassesToRegister> services,
             IServiceCollection serviceCollection)
         {
-            Log.Logger = new LoggerConfiguration().WriteTo.Console().CreateBootstrapLogger();
+            Log.Logger = new LoggerConfiguration().WriteTo.Console().CreateLogger();
 
             var classesRegistered = new StringBuilder();
 
@@ -30,12 +32,26 @@ namespace AutoDependencyRegistration.Services
             {
                 if (service.ClassName != null && service.InterfaceName.Any() && !service.IgnoreInterface)
                 {
-                    AddServiceWithInterface(service, serviceCollection, classesRegistered);
+                    if (!string.IsNullOrEmpty(service.ServiceKey))
+                    {
+                        AddKeyedServiceWithInterface(service, serviceCollection, classesRegistered);
+                    }
+                    else
+                    {
+                        AddServiceWithInterface(service, serviceCollection, classesRegistered);
+                    }
                 }
                 else if ((service.ClassName != null && !service.InterfaceName.Any()) 
                          || service is { ClassName: { }, IgnoreInterface: true }) 
                 {
-                    AddServiceWithoutInterface(service, serviceCollection, classesRegistered);
+                    if (!string.IsNullOrEmpty(service.ServiceKey))
+                    {
+                        AddKeyedServiceWithoutInterface(service, serviceCollection, classesRegistered);
+                    }
+                    else
+                    {
+                        AddServiceWithoutInterface(service, serviceCollection, classesRegistered);
+                    }
                 }
             }
             
@@ -83,6 +99,70 @@ namespace AutoDependencyRegistration.Services
             var message = $"{service.ClassName?.Name} has been registered as {service.ServiceLifetime}. ";
             Log.Logger.Information("{Message}", message);
             classesRegistered.AppendLine(message);
+        }
+
+        private static void AddKeyedServiceWithInterface(
+            ClassesToRegister service,
+            IServiceCollection serviceCollection,
+            StringBuilder classesRegistered)
+        {
+            foreach (var implementation in service.InterfaceName)
+            {
+                AddKeyedService(serviceCollection, implementation, service.ClassName, service.ServiceLifetime, service.ServiceKey!);
+
+                var message = $"{service.ClassName?.Name}, {implementation} has been registered as {service.ServiceLifetime} with key '{service.ServiceKey}'. ";
+                Log.Logger.Information("{Message}", message);
+                classesRegistered.AppendLine(message);
+            }
+        }
+
+        private static void AddKeyedServiceWithoutInterface(
+            ClassesToRegister service,
+            IServiceCollection serviceCollection,
+            StringBuilder classesRegistered)
+        {
+            AddKeyedService(serviceCollection, service.ClassName!, service.ClassName, service.ServiceLifetime, service.ServiceKey!);
+
+            var message = $"{service.ClassName?.Name} has been registered as {service.ServiceLifetime} with key '{service.ServiceKey}'. ";
+            Log.Logger.Information("{Message}", message);
+            classesRegistered.AppendLine(message);
+        }
+
+        private static void AddKeyedService(
+            IServiceCollection serviceCollection,
+            Type serviceType,
+            Type implementationType,
+            ServiceLifetime lifetime,
+            string key)
+        {
+            // Use reflection to call AddKeyed* methods which are only available in .NET 8+
+            var methodName = lifetime switch
+            {
+                ServiceLifetime.Transient => "AddKeyedTransient",
+                ServiceLifetime.Scoped => "AddKeyedScoped",
+                ServiceLifetime.Singleton => "AddKeyedSingleton",
+                _ => throw new ArgumentException($"Unknown service lifetime: {lifetime}")
+            };
+
+            var method = typeof(ServiceCollectionServiceExtensions)
+                .GetMethods(BindingFlags.Public | BindingFlags.Static)
+                .FirstOrDefault(m => m.Name == methodName &&
+                                     m.IsGenericMethod &&
+                                     m.GetParameters().Length == 2 &&
+                                     m.GetParameters()[0].ParameterType == typeof(IServiceCollection));
+
+            if (method != null)
+            {
+                // Create a generic method with the service and implementation types
+                var genericMethod = method.MakeGenericMethod(serviceType, implementationType);
+                genericMethod.Invoke(null, new object[] { serviceCollection, key });
+            }
+            else
+            {
+                // Fallback: If keyed services are not available (pre-.NET 8), log a warning and register normally
+                Log.Logger.Warning("Keyed services are only available in .NET 8 or later. Registering {ServiceType} as a regular service.", serviceType.Name);
+                serviceCollection.Add(new ServiceDescriptor(serviceType, implementationType, lifetime));
+            }
         }
     }
 }
